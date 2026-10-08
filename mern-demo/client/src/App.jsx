@@ -4,7 +4,7 @@ function App() {
   const [students, setStudents] = useState([]);
   const [form, setForm] = useState({ studentId: '', name: '', email: '' });
 
-  const API_URL = 'https://ubiquitous-couscous-g4xxp9j5g47vcp9q-5000.app.github.dev/api/students';
+ const API_URL = 'http://localhost:5000/api/students';
 
   const fetchStudents = async () => {
     try {

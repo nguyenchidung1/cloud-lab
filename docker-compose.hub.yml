@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    image: nguyenchidung5xii/mern-backend:1.0
+    container_name: cloud-lab-backend-hub
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb+srv://chidungsamsung123_db_user:Dung123456789@cluster0.ryn9pcy.mongodb.net/cloud_lab?retryWrites=true&w=majority
+      - PORT=5000
+    networks:
+      - mern-net
+
+  frontend:
+    image: nguyenchidung5xii/mern-frontend:1.0
+    container_name: cloud-lab-frontend-hub
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - mern-net
+
+networks:
+  mern-net:
+    driver: bridge

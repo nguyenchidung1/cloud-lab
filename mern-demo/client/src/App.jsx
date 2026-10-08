@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div style={{ padding: '30px', fontFamily: 'Arial, sans-serif', color: '#fff' }}>
-      <h1>Quan Ly Sinh Vien (MERN Stack)</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">Quan Ly Sinh Vien (MERN Stack - v2.0)</h1>
       <form onSubmit={handleSubmit} style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
         <input 
           placeholder="MSSV" 

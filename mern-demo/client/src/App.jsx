@@ -34,10 +34,10 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-            studentId: mssv, 
-            name: hoTen, 
-            email: email  
-          }),
+          studentId: mssv, 
+          name: hoTen, 
+          email: email 
+        }),
       });
 
       if (response.ok) {
@@ -45,6 +45,8 @@ function App() {
         setHoTen('');
         setEmail('');
         fetchStudents();
+      } else {
+        console.error('Lỗi từ server khi thêm sinh viên');
       }
     } catch (error) {
       console.error('Lỗi khi thêm sinh viên:', error);
@@ -59,28 +61,28 @@ function App() {
       </header>
 
       <form onSubmit={handleSubmit} className="form-group">
-        <input
-          type="text"
-          placeholder="Mã số sinh viên"
-          value={mssv}
-          onChange={(e) => setMssv(e.target.value)}
+        <input 
+          type="text" 
+          placeholder="Mã số sinh viên" 
+          value={mssv} 
+          onChange={(e) => setMssv(e.target.value)} 
         />
-        <input
-          type="text"
-          placeholder="Họ và tên"
-          value={hoTen}
-          onChange={(e) => setHoTen(e.target.value)}
+        <input 
+          type="text" 
+          placeholder="Họ và tên" 
+          value={hoTen} 
+          onChange={(e) => setHoTen(e.target.value)} 
         />
-        <input
-          type="email"
-          placeholder="Địa chỉ Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+        <input 
+          type="email" 
+          placeholder="Email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
         />
         <button type="submit">Thêm Sinh Viên</button>
       </form>
 
-      <div className="list-container">
+      <div className="table-container">
         <h2>Danh Sách Sinh Viên</h2>
         {students.length === 0 ? (
           <p className="empty-text">Chưa có dữ liệu sinh viên nào.</p>
@@ -98,8 +100,8 @@ function App() {
               {students.map((sv, index) => (
                 <tr key={sv._id || index}>
                   <td>{index + 1}</td>
-                  <td><span className="badge">{sv.mssv}</span></td>
-                  <td className="font-semibold">{sv.hoTen}</td>
+                  <td><span className="badge">{sv.studentId}</span></td>
+                  <td className="font-semibold">{sv.name}</td>
                   <td>{sv.email}</td>
                 </tr>
               ))}

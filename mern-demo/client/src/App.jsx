@@ -83,7 +83,6 @@ function App() {
     <div className="container">
       <header className="header">
         <h1>Quản Lý Sinh Viên</h1>
-        <p>MERN Stack - Full CRUD Features</p>
       </header>
 
       <form onSubmit={handleSubmit} className="form-group">

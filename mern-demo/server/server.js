@@ -14,9 +14,9 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.error("Loi ket noi MongoDB:", err));
 
 const studentSchema = new mongoose.Schema({
-  studentId: { type: String, required: true },
-  name: { type: String, required: true },
-  email: { type: String, required: true }
+    studentId: { type: String, required: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true }
 });
 const Student = mongoose.model('Student', studentSchema);
 

@@ -10,7 +10,7 @@ function App() {
   // Lấy danh sách sinh viên từ backend
   const fetchStudents = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/students');
+      const response = await fetch('/api/students'); // hoặc điền URL backend Render vào đây
       const data = await response.json();
       setStudents(data);
     } catch (error) {

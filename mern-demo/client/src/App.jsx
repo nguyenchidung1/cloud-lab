@@ -7,10 +7,12 @@ function App() {
   const [hoTen, setHoTen] = useState('');
   const [email, setEmail] = useState('');
 
+  const API_URL = 'https://mern-backend-dung237030.onrender.com/api/students';
+
   // Lấy danh sách sinh viên từ backend
   const fetchStudents = async () => {
     try {
-      const response = await fetch('/api/students'); // hoặc điền URL backend Render vào đây
+      const response = await fetch(API_URL);
       const data = await response.json();
       setStudents(data);
     } catch (error) {
@@ -28,7 +30,7 @@ function App() {
     if (!mssv || !hoTen || !email) return;
 
     try {
-      const response = await fetch('http://localhost:5000/api/students', {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mssv, hoTen, email }),

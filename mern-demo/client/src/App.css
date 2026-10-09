@@ -16,7 +16,13 @@ body {
 
 .container {
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 30px;
+  background: #111827;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
 }
 
 .header {

@@ -1,8 +1,10 @@
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY package*.json ./
+
+COPY mern-demo/client/package*.json ./
 RUN npm install --no-audit --no-fund
-COPY . .
+
+COPY mern-demo/client/ ./
 RUN npm run build
 
 FROM nginx:alpine

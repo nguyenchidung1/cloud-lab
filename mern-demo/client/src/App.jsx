@@ -7,13 +7,10 @@ function App() {
   const [hoTen, setHoTen] = useState('');
   const [email, setEmail] = useState('');
 
-  // Thay bằng link Backend API của Dũng trên Render (đừng để dấu / ở cuối)
-  const API_URL = 'https://mern-backend-dung237030.onrender.com/api/students';
-
-  // Lấy danh sách sinh viên từ Backend
+  // Lấy danh sách sinh viên từ backend
   const fetchStudents = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch('http://localhost:5000/api/students');
       const data = await response.json();
       setStudents(data);
     } catch (error) {
@@ -28,13 +25,10 @@ function App() {
   // Thêm sinh viên mới
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!mssv || !hoTen || !email) {
-      alert('Vui lòng nhập đầy đủ thông tin!');
-      return;
-    }
+    if (!mssv || !hoTen || !email) return;
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch('http://localhost:5000/api/students', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mssv, hoTen, email }),
@@ -44,74 +38,68 @@ function App() {
         setMssv('');
         setHoTen('');
         setEmail('');
-        fetchStudents(); // Tải lại danh sách
-      } else {
-        alert('Thêm sinh viên thất bại!');
+        fetchStudents();
       }
     } catch (error) {
-      console.error('Lỗi khi thêm:', error);
+      console.error('Lỗi khi thêm sinh viên:', error);
     }
   };
 
   return (
-    <div className="app-container">
-      <div className="card">
-        <h1 className="title">Quản Lý Sinh Viên</h1>
-        <p className="subtitle">MERN Stack - Nền tảng hiện đại</p>
+    <div className="container">
+      <header className="header">
+        <h1>Quản Lý Sinh Viên</h1>
+        <p>MERN Stack - Minimalist</p>
+      </header>
 
-        {/* Form thêm sinh viên */}
-        <form onSubmit={handleSubmit} className="student-form">
-          <div className="input-group">
-            <input
-              type="text"
-              placeholder="Mã số sinh viên (MSSV)"
-              value={mssv}
-              onChange={(e) => setMssv(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Họ và tên"
-              value={hoTen}
-              onChange={(e) => setHoTen(e.target.value)}
-            />
-            <input
-              type="email"
-              placeholder="Địa chỉ Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="btn-submit">Thêm Sinh Viên</button>
-        </form>
+      <form onSubmit={handleSubmit} className="form-group">
+        <input
+          type="text"
+          placeholder="Mã số sinh viên"
+          value={mssv}
+          onChange={(e) => setMssv(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Họ và tên"
+          value={hoTen}
+          onChange={(e) => setHoTen(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Địa chỉ Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button type="submit">Thêm Sinh Viên</button>
+      </form>
 
-        {/* Bảng danh sách sinh viên */}
-        <div className="table-container">
-          <h2 className="section-title">Danh Sách Sinh Viên</h2>
-          {students.length === 0 ? (
-            <p className="empty-text">Chưa có dữ liệu sinh viên nào.</p>
-          ) : (
-            <table className="student-table">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>MSSV</th>
-                  <th>Họ và Tên</th>
-                  <th>Email</th>
+      <div className="list-container">
+        <h2>Danh Sách Sinh Viên</h2>
+        {students.length === 0 ? (
+          <p className="empty-text">Chưa có dữ liệu sinh viên nào.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>MSSV</th>
+                <th>Họ và Tên</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((sv, index) => (
+                <tr key={sv._id || index}>
+                  <td>{index + 1}</td>
+                  <td><span className="badge">{sv.mssv}</span></td>
+                  <td className="font-semibold">{sv.hoTen}</td>
+                  <td>{sv.email}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {students.map((sv, index) => (
-                  <tr key={sv._id || index}>
-                    <td>{index + 1}</td>
-                    <td><span className="badge">{sv.mssv}</span></td>
-                    <td className="font-semibold">{sv.hoTen}</td>
-                    <td>{sv.email}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

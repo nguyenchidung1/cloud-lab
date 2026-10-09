@@ -1,65 +1,69 @@
 const express = require('express');
-const cors = require('cors');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("Ket noi MongoDB Atlas thanh cong!"))
-  .catch((err) => console.error("Loi ket noi MongoDB:", err));
+// Kết nối MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://cluster0.xxxx.mongodb.net/qlsv?retryWrites=true&w=majority')
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.log('MongoDB connection error:', err));
 
+// Định nghĩa Schema
 const studentSchema = new mongoose.Schema({
     studentId: { type: String, required: true },
     name: { type: String, required: true },
     email: { type: String, required: true }
 });
+
 const Student = mongoose.model('Student', studentSchema);
 
-app.get('/api/hello', (req, res) => {
-  res.json({ message: "Backend dang hoat dong tot!" });
-});
-
+// API lấy danh sách sinh viên (GET)
 app.get('/api/students', async (req, res) => {
-  try {
-    const students = await Student.find();
-    res.json(students);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    try {
+        const students = await Student.find();
+        res.json(students);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
+// API thêm sinh viên mới (POST)
 app.post('/api/students', async (req, res) => {
-  try {
-    const newStudent = await Student.create(req.body);
-    res.status(201).json(newStudent);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+    try {
+        const newStudent = new Student(req.body);
+        await newStudent.save();
+        res.status(201).json(newStudent);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
+// API cập nhật sinh viên (PUT)
 app.put('/api/students/:id', async (req, res) => {
-  try {
-    const updatedStudent = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(updatedStudent);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+    try {
+        const updatedStudent = await Student.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true }
+        );
+        res.json(updatedStudent);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
+// API xóa sinh viên (DELETE)
 app.delete('/api/students/:id', async (req, res) => {
-  try {
-    await Student.findByIdAndDelete(req.params.id);
-    res.json({ message: "Xoa sinh vien thanh cong" });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+    try {
+        await Student.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Đã xóa thành công' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
